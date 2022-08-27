@@ -1,25 +1,51 @@
+import { useState } from 'react';
 import { useFormik } from 'formik';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
 import * as Yup from 'yup';
-import { Container, Button, TextField } from '@mui/material';
+import { Alert, Button, Container, TextField } from '@mui/material';
+import {
+  fetchUser,
+  saveEmailToLocalStorage,
+  selectErrorMessages,
+} from '../features/user/userSlice';
+import { getUserEmail } from '../features/user/userStorage';
 
 const EmailForm = () => {
+  const errors = useAppSelector(selectErrorMessages);
+  const [emailInput, setEmailInput] = useState(getUserEmail());
+  const dispatch = useAppDispatch();
+
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
   });
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: emailInput,
     },
     validationSchema: validationSchema,
     onSubmit:async (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // Sincere@april.biz
+      const { payload } = await dispatch(fetchUser(values.email));
+      console.log(payload);
+      dispatch(saveEmailToLocalStorage());
     },
   });
 
   return (
     <Container maxWidth="sm" sx={{ mb: 2, mt: 2 }}>
       <form onSubmit={formik.handleSubmit}>
+        {
+          errors.length > 0 ?
+            <Alert severity="error" aria-live="assertive">
+              {errors.map((error, index) => {
+                return <p key={`alert-${index}`}>
+                  {error}
+                </p>;
+              })}
+            </Alert> : <></>
+        }
+
         <TextField
           fullWidth
           id="email"
