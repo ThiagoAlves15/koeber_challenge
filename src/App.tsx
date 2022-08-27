@@ -1,5 +1,6 @@
 import './App.css';
 import AppBar from './components/AppBar';
+import UserSearch from './components/UserSearch';
 // import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
@@ -26,6 +27,10 @@ function App() {
       <header>
         <AppBar />
       </header>
+
+      <main>
+        <UserSearch />
+      </main>
     </div>
   );
   // } else {
