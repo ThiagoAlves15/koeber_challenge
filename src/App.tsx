@@ -1,6 +1,7 @@
 import './App.css';
 import AppBar from './components/AppBar';
 import UserSearch from './components/UserSearch';
+import PostsList from './components/PostsList';
 // import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
 
       <main>
         <UserSearch />
+        <PostsList />
       </main>
     </div>
   );
