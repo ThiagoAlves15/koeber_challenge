@@ -6,11 +6,13 @@ import {
   CardContent,
   Typography,
 } from '@mui/material';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { useAppSelector } from '../app/hooks';
 import { selectPosts } from '../features/post/postSlice';
+import { selectUser } from '../features/user/userSlice';
 import PostForm from './PostForm';
 
 export default function Posts() {
+  const user = useAppSelector(selectUser);
   const posts = [...useAppSelector(selectPosts)];
   const [isCreating, setIsCreating] = useState(false);
 
@@ -29,16 +31,17 @@ export default function Posts() {
           <PostForm
             toggle={togglePostForm}
           /> :
-          <Button
-            fullWidth
-            variant="outlined"
-            color="primary"
-            id="create-button"
-            sx={{ mb: 2 }}
-            onClick={() => togglePostForm()}
-          >
-          Create post
-        </Button>
+          user && user.id ?
+            <Button
+              fullWidth
+              variant="outlined"
+              color="primary"
+              id="create-button"
+              sx={{ mb: 2 }}
+              onClick={() => togglePostForm()}
+            >
+              Create post
+            </Button> : ''
       }
 
       {
@@ -46,9 +49,9 @@ export default function Posts() {
           return (
             <Card key={post.id} sx={{ mb: 2 }}>
               <CardContent>
-                <Typography variant="h5" component="div">{post.title}</Typography>
+                <Typography sx={{ overflowWrap: "break-word" }} variant="h5" component="div">{post.title}</Typography>
 
-                <Typography variant="body2">{post.body}</Typography>
+                <Typography sx={{ overflowWrap: "break-word" }}  variant="body2" color="text.secondary">{post.body}</Typography>
               </CardContent>
             </Card>
           );

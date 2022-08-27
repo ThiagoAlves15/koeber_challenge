@@ -2,12 +2,18 @@ import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Card, CardContent, TextField } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { selectUser } from '../features/user/userSlice';
+import { createPost } from '../features/post/postSlice';
 
 interface PostFormProps {
   toggle: () => void;
 }
 
 const PostForm: FC<PostFormProps> = (props): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
   const validationSchema = Yup.object({
     title: Yup
       .string()
@@ -26,7 +32,14 @@ const PostForm: FC<PostFormProps> = (props): JSX.Element => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      alert(JSON.stringify(values, null, 2));
+      const postData = {
+        userId: user.id,
+        title: values.title,
+        body: values.body,
+      };
+
+      await dispatch(createPost(postData));
+
       props.toggle();
     },
   });
