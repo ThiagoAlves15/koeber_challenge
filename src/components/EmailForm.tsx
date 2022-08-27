@@ -9,11 +9,27 @@ import {
   selectErrorMessages,
 } from '../features/user/userSlice';
 import { getUserEmail } from '../features/user/userStorage';
+import { fetchUserPosts } from '../features/post/postSlice';
+import User from './UserSearch';
 
 const EmailForm = () => {
   const errors = useAppSelector(selectErrorMessages);
   const [emailInput, setEmailInput] = useState(getUserEmail());
   const dispatch = useAppDispatch();
+
+  async function handleUser(email: string) {
+    const { payload } = await dispatch(fetchUser(email));
+
+    dispatch(saveEmailToLocalStorage());
+
+    return payload;
+  }
+
+  async function handleUserPosts(id: number) {
+    const { payload } = await dispatch(fetchUserPosts(id));
+
+    return payload;
+  }
 
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -24,11 +40,13 @@ const EmailForm = () => {
       email: emailInput,
     },
     validationSchema: validationSchema,
-    onSubmit:async (values) => {
+    onSubmit: async (values) => {
       // Sincere@april.biz
-      const { payload } = await dispatch(fetchUser(values.email));
-      console.log(payload);
-      dispatch(saveEmailToLocalStorage());
+      const user = await handleUser(values.email);
+
+      if (user.id) {
+        await handleUserPosts(user.id);
+      }
     },
   });
 

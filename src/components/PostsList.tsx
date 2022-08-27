@@ -6,16 +6,13 @@ import {
   CardContent,
   Typography,
 } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { selectPosts } from '../features/post/postSlice';
 import PostForm from './PostForm';
 
 export default function Posts() {
+  const posts = [...useAppSelector(selectPosts)];
   const [isCreating, setIsCreating] = useState(false);
-
-  const posts = [{
-    id: 1,
-    title: 'titulo',
-    body: 'texto',
-  }]
 
   function togglePostForm() {
     if (isCreating) {

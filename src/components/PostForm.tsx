@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Container, Button, TextField } from '@mui/material';
+import { Button, Card, CardContent, TextField } from '@mui/material';
 
 interface PostFormProps {
   toggle: () => void;
@@ -32,40 +32,42 @@ const PostForm: FC<PostFormProps> = (props): JSX.Element => {
   });
 
   return (
-    <Container maxWidth="sm" sx={{ mb: 2, mt: 2 }}>
-      <form onSubmit={formik.handleSubmit}>
-        <TextField
-          fullWidth
-          id="title"
-          name="title"
-          label="Title"
-          margin="normal"
-          variant="filled"
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          error={formik.touched.title && Boolean(formik.errors.title)}
-          helperText={formik.touched.title && formik.errors.title}
-        />
+    <Card sx={{ mb: 2, mt: 2 }}>
+      <CardContent>
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            fullWidth
+            id="title"
+            name="title"
+            label="Title"
+            margin="normal"
+            variant="filled"
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            error={formik.touched.title && Boolean(formik.errors.title)}
+            helperText={formik.touched.title && formik.errors.title}
+          />
 
-        <TextField
-          fullWidth
-          id="body"
-          name="body"
-          label="Body"
-          type="body"
-          margin="normal"
-          variant="filled"
-          value={formik.values.body}
-          onChange={formik.handleChange}
-          error={formik.touched.body && Boolean(formik.errors.body)}
-          helperText={formik.touched.body && formik.errors.body}
-        />
+          <TextField
+            fullWidth
+            id="body"
+            name="body"
+            label="Body"
+            type="body"
+            margin="normal"
+            variant="filled"
+            value={formik.values.body}
+            onChange={formik.handleChange}
+            error={formik.touched.body && Boolean(formik.errors.body)}
+            helperText={formik.touched.body && formik.errors.body}
+          />
 
-        <Button color="primary" variant="contained" fullWidth type="submit">
-          Submit
-        </Button>
-      </form>
-    </Container>
+          <Button color="primary" variant="outlined" fullWidth type="submit">
+            Submit
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

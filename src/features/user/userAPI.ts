@@ -1,5 +1,5 @@
 import axios from '../../api/axios';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { GetUsersResponse, IUser } from './userInterface';
 
 export async function fetchUserByEmail(email: string) {
@@ -9,9 +9,9 @@ export async function fetchUserByEmail(email: string) {
 
   return axios.get<GetUsersResponse>('/users', { params: params })
     .then((response: AxiosResponse) => {
-      return response['data'];
+      return response.data;
     })
     .catch((error: AxiosError) => {
-      return error;
+      return error.message;
     });
 }
